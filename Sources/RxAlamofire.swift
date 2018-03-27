@@ -830,10 +830,18 @@ extension Reactive where Base: DataRequest {
                         observer.on(.completed)
                     }
                     else {
-                        observer.on(.error(RxAlamofireUnknownError))
+                        var err = RxAlamofireUnknownError
+                        if let data = packedResponse.data {
+                            err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                        }
+                        observer.on(.error(err))
                     }
                 case .failure(let error):
-                    observer.on(.error(error as Error))
+                    var err = error as NSError
+                    if let data = packedResponse.data {
+                        err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                    }
+                    observer.on(.error(err))
                 }
             }
             return Disposables.create {
@@ -883,10 +891,18 @@ extension Reactive where Base: DataRequest {
                             observer.on(.completed)
                         }
                         else {
-                            observer.on(.error(RxAlamofireUnknownError))
+                            var err = RxAlamofireUnknownError
+                            if let data = packedResponse.data {
+                                err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                            }
+                            observer.on(.error(err))
                         }
                     case .failure(let error):
-                        observer.on(.error(error as Error))
+                        var err = error as NSError
+                        if let data = packedResponse.data {
+                            err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                        }
+                        observer.on(.error(err))
                     }
                 }
             return Disposables.create {
