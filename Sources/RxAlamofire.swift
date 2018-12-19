@@ -832,14 +832,22 @@ extension Reactive where Base: DataRequest {
                     else {
                         var err = RxAlamofireUnknownError
                         if let data = packedResponse.data {
-                            err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                            var code = err.code
+                            if let statusCode = packedResponse.response?.statusCode {
+                                code = statusCode
+                            }
+                            err = NSError(domain: err.domain, code: code, userInfo: ["data": data])
                         }
                         observer.on(.error(err))
                     }
                 case .failure(let error):
                     var err = error as NSError
                     if let data = packedResponse.data {
-                        err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                        var code = err.code
+                        if let statusCode = packedResponse.response?.statusCode {
+                            code = statusCode
+                        }
+                        err = NSError(domain: err.domain, code: code, userInfo: ["data": data])
                     }
                     observer.on(.error(err))
                 }
@@ -893,14 +901,22 @@ extension Reactive where Base: DataRequest {
                         else {
                             var err = RxAlamofireUnknownError
                             if let data = packedResponse.data {
-                                err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                                var code = err.code
+                                if let statusCode = packedResponse.response?.statusCode {
+                                    code = statusCode
+                                }
+                                err = NSError(domain: err.domain, code: code, userInfo: ["data": data])
                             }
                             observer.on(.error(err))
                         }
                     case .failure(let error):
                         var err = error as NSError
                         if let data = packedResponse.data {
-                            err = NSError(domain: err.domain, code: err.code, userInfo: ["data": data])
+                            var code = err.code
+                            if let statusCode = packedResponse.response?.statusCode {
+                                code = statusCode
+                            }
+                            err = NSError(domain: err.domain, code: code, userInfo: ["data": data])
                         }
                         observer.on(.error(err))
                     }
